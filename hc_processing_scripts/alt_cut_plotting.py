@@ -6,8 +6,8 @@ from matplotlib.cm import ScalarMappable
 from matplotlib.colors import Normalize
 
 # File setup
-direc = '/Users/clevenger/Simulations/poker_asi_mar19/' # path to directory containing simulation output files
-outdir = '/Users/clevenger/Simulations/poker_asi_mar19/postprocessing/' # path to save plot outputs
+direc = '/Users/clevenger/Simulations/agu24/just_precip/' # path to directory containing simulation output files
+outdir = '/Users/clevenger/Simulations/agu24/just_precip/plots/alt_cuts' # path to save plot outputs
 
 # File reading stuff
 cfg = read.config(direc) 
