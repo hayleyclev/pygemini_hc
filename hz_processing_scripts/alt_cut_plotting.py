@@ -6,16 +6,16 @@ from matplotlib.cm import ScalarMappable
 from matplotlib.colors import Normalize
 
 # File setup
-direc = '/Users/clevenger/Simulations/poker_asi_mar19/' # path to directory containing simulation output files
-outdir = '/Users/clevenger/Simulations/poker_asi_mar19/postprocessing/' # path to save plot outputs
+direc = '/Users/clevenger/Simulations/paper01_event01/' # path to directory containing simulation output files
+outdir = '/Users/clevenger/Projects/paper01/events/20230227/gemini_postprocessing/' # path to save plot outputs
 
 # File reading stuff
 cfg = read.config(direc) 
 xg = read.grid(direc)
 parm = "ne" # choose ne, Ti, Te, v1, v2, v2, J1, J2, or J3
-dat = read.frame(direc, cfg["time"][2], var=parm) # change [2] for desire index
+dat = read.frame(direc, cfg["time"][2], var=parm) # change [2] for desire index START AT 61
 
-lalt = 128; llon = 128; llat = 128; # resolutions to plot model outputs (higher=better)
+lalt = 256; llon = 256; llat = 256; # resolutions to plot model outputs (higher=better)
 
 print("Sampling in geographic coords...")
 galti, gloni, glati, parmgi = model2geogcoords(xg, dat[parm], lalt, llon, llat, wraplon=True)
@@ -35,7 +35,7 @@ ax.grid(False)
 
 # Normalize plot color/quantities so all of the 2D maps can share the same colorbar
 norm = Normalize(vmin=np.nanmin(parmgi), vmax=np.nanmax(parmgi))
-mappable = ScalarMappable(norm=norm, cmap='viridis')
+mappable = ScalarMappable(norm=norm, cmap='gnuplot2')
 
 print("Making altitude cuts...")
 for alt_idx in alt_indices:
@@ -45,12 +45,12 @@ for alt_idx in alt_indices:
     C_normalized = (C - np.nanmin(C)) / (np.nanmax(C) - np.nanmin(C)) # normalize for color mapping
     
     print("Plotting each altitude cut...")
-    ax.plot_surface(X, Y, Z, facecolors=plt.cm.viridis(C_normalized), rstride=1, cstride=1, edgecolor='none')
+    ax.plot_surface(X, Y, Z, facecolors=plt.cm.gnuplot2(C_normalized), rstride=1, cstride=1, edgecolor='none')
 
 print("Making combined altitude slice figure...")
 # Add colorbar + labels
 cbar = fig.colorbar(mappable, ax=ax, shrink=0.5, aspect=10)
-cbar.set_label('ne (m$^{-3}$)') # or 'Ti (K)', 'Te (K)', 'v$_{1} (m/s)$', 'J_{1} (A/m$^{2}$)'
+cbar.set_label('ne (m$^{-3}$)') # or 'Ti (K)', 'Te (K)', 'v$_{1} (m/s)$', 'J_{1} (A/m$^{2}$)', 'ne (m$^{-3}$)'
 ax.set_xlabel('Latitude (deg)')
 ax.set_ylabel('Longitude (deg)')
 ax.set_zlabel('Altitude (m)')
